@@ -4,28 +4,61 @@ import { Badge } from '@/components/ui/badge';
 
 const projects = [
   {
-    title: 'AI-Powered Analytics Platform',
-    description: 'Enterprise analytics solution with machine learning insights and real-time data visualization.',
-    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80',
-    tags: ['AI/ML', 'React', 'Python'],
+    title: 'Capdata',
+    description: 'Data analytics and business intelligence platform providing comprehensive insights and reporting solutions.',
+    image: 'https://capdata.es/static/LOGO/Logo_CapData_3.png',
+    url: 'https://capdata.es/',
+    tags: ['Analytics', 'Business Intelligence', 'Data'],
   },
   {
-    title: 'Global Payment Gateway',
-    description: 'Multi-currency payment processing system supporting 150+ countries with fraud detection.',
-    image: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=800&q=80',
-    tags: ['FinTech', 'Node.js', 'Stripe'],
+    title: 'NYXMEDIA',
+    description: 'Newsletter and media management platform for content distribution and engagement tracking.',
+    image: 'https://prueba.nyxmedia.es/images/67%2C356x223%2B66%2B141/10911913/logo_nyx.png',
+    url: 'http://newsletters.nyxmedia.es/',
+    tags: ['Media', 'Newsletter', 'Content'],
   },
   {
-    title: 'Healthcare SaaS Platform',
-    description: 'HIPAA-compliant patient management system with telemedicine capabilities.',
-    image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80',
-    tags: ['SaaS', 'Healthcare', 'Security'],
+    title: 'Maatispa',
+    description: 'Spa and wellness booking platform with appointment management and customer scheduling system.',
+    image: '/maatispa.jpeg',
+    url: 'https://booking.maatispa.com/',
+    tags: ['Booking', 'Spa', 'Wellness'],
   },
   {
-    title: 'E-Commerce Marketplace',
-    description: 'Scalable marketplace with vendor management, inventory tracking, and analytics.',
-    image: 'https://images.unsplash.com/photo-1557821552-17105176677c?w=800&q=80',
-    tags: ['E-Commerce', 'React', 'AWS'],
+    title: 'PulseLoopCare',
+    description: 'Healthcare management platform for patient care coordination and medical record management.',
+    image: '/pulseloopcare.jpg',
+    url: 'https://pulseloopcare.com/',
+    tags: ['Healthcare', 'SaaS', 'Medical'],
+  },
+  {
+    title: 'Emploio',
+    description: 'Job marketplace and recruitment platform connecting employers with talented professionals.',
+    image: '/emploio.svg',
+    url: 'https://www.emploio.com/en',
+    tags: ['Recruitment', 'Job Market', 'HR'],
+  },
+  {
+    title: 'BeautyCraft',
+    description: 'Beauty and cosmetics platform offering products and services for the beauty industry.',
+    image: null, // Will use custom logo
+    logo: 'B',
+    url: 'https://www.beautycrafthq.com/',
+    tags: ['Beauty', 'E-Commerce', 'Retail'],
+  },
+  {
+    title: 'Glopy',
+    description: 'Interactive platform with engaging animations and user experience features.',
+    image: 'https://glopy.app/static/Animaciones_Glopy/Accion_espera_Glopy_GIF.gif',
+    url: 'https://glopy.app/',
+    tags: ['Interactive', 'Animation', 'UX'],
+  },
+  {
+    title: 'Airdash',
+    description: 'E-commerce store platform for fast and efficient online shopping experience.',
+    image: '/airdash.png',
+    url: 'https://airdash.store/',
+    tags: ['E-Commerce', 'Store', 'Retail'],
   },
 ];
 
@@ -50,48 +83,63 @@ export default function Portfolio() {
         </div>
 
         {/* Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {projects.map((project, index) => (
-            <Card
+            <a
               key={index}
-              className="overflow-hidden border-2 border-slate-800 bg-slate-950/50 backdrop-blur-sm hover:border-gold/50 transition-all duration-300 hover:shadow-2xl hover:shadow-gold/10 group cursor-pointer"
+              href={project.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block"
             >
-              {/* Project Image */}
-              <div className="relative h-72 overflow-hidden">
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/50 to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className="w-16 h-16 rounded-full bg-gold flex items-center justify-center shadow-2xl shadow-gold/50">
-                    <ExternalLink className="w-8 h-8 text-slate-950" />
+              <Card
+                className="overflow-hidden border-2 border-slate-800 bg-slate-950/50 backdrop-blur-sm hover:border-gold/50 transition-all duration-300 hover:shadow-2xl hover:shadow-gold/10 group cursor-pointer h-full"
+              >
+                {/* Project Image/Logo */}
+                <div className="relative h-72 overflow-hidden bg-slate-900 flex items-center justify-center">
+                  {project.image ? (
+                    <>
+                      <img
+                        src={project.image}
+                        alt={project.title}
+                        className="w-full h-full object-contain p-8 transition-transform duration-700 group-hover:scale-110"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/30 to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
+                    </>
+                  ) : project.logo ? (
+                    <div className="w-32 h-32 bg-indigo-600 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform shadow-2xl">
+                      <span className="text-white font-bold text-5xl">{project.logo}</span>
+                    </div>
+                  ) : null}
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="w-16 h-16 rounded-full bg-gold flex items-center justify-center shadow-2xl shadow-gold/50">
+                      <ExternalLink className="w-8 h-8 text-slate-950" />
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Project Info */}
-              <div className="p-8">
-                <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-gold transition-colors">
-                  {project.title}
-                </h3>
-                <p className="text-slate-400 mb-6 leading-relaxed">
-                  {project.description}
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {project.tags.map((tag, tagIndex) => (
-                    <Badge
-                      key={tagIndex}
-                      variant="secondary"
-                      className="bg-slate-800 text-slate-300 hover:bg-gold hover:text-slate-950 transition-colors border-0 px-3 py-1"
-                    >
-                      {tag}
-                    </Badge>
-                  ))}
+                {/* Project Info */}
+                <div className="p-8">
+                  <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-gold transition-colors">
+                    {project.title}
+                  </h3>
+                  <p className="text-slate-400 mb-6 leading-relaxed">
+                    {project.description}
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {project.tags.map((tag, tagIndex) => (
+                      <Badge
+                        key={tagIndex}
+                        variant="secondary"
+                        className="bg-slate-800 text-slate-300 hover:bg-gold hover:text-slate-950 transition-colors border-0 px-3 py-1"
+                      >
+                        {tag}
+                      </Badge>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            </Card>
+              </Card>
+            </a>
           ))}
         </div>
       </div>

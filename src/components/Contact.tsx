@@ -146,6 +146,9 @@ export default function Contact() {
                         <SelectValue placeholder="Select project type" />
                       </SelectTrigger>
                       <SelectContent className="bg-slate-900 border-slate-700">
+                        <SelectItem value="website">Website Development</SelectItem>
+                        <SelectItem value="automation">Automation Implementation</SelectItem>
+                        <SelectItem value="trading-bot">Trading Bot Development</SelectItem>
                         <SelectItem value="ai">AI Integration</SelectItem>
                         <SelectItem value="payment">Payment Solutions</SelectItem>
                         <SelectItem value="web">Custom Web App</SelectItem>
@@ -205,7 +208,9 @@ export default function Contact() {
                 </div>
                 <div>
                   <div className="font-semibold text-white text-sm">Email</div>
-                  <div className="text-slate-400 text-sm">hello@harmonytechlabs.com</div>
+                  <a href="mailto:harmonymwithalii@gmail.com" className="text-slate-400 text-sm hover:text-gold transition-colors">
+                    harmonymwithalii@gmail.com
+                  </a>
                 </div>
               </div>
               <div className="flex items-start space-x-3 p-4 rounded-xl bg-slate-900/50 backdrop-blur-sm border border-slate-800">
@@ -213,8 +218,13 @@ export default function Contact() {
                   <Phone className="w-5 h-5 text-gold" />
                 </div>
                 <div>
-                  <div className="font-semibold text-white text-sm">Phone</div>
-                  <div className="text-slate-400 text-sm">+1 (555) 123-4567</div>
+                  <div className="font-semibold text-white text-sm">Phone / WhatsApp</div>
+                  <a href="tel:+254713028200" className="text-slate-400 text-sm hover:text-gold transition-colors block">
+                    +254 713 028 200
+                  </a>
+                  <a href="https://wa.me/254713028200" target="_blank" rel="noopener noreferrer" className="text-gold text-xs hover:underline mt-1 block">
+                    Available on WhatsApp
+                  </a>
                 </div>
               </div>
               <div className="flex items-start space-x-3 p-4 rounded-xl bg-slate-900/50 backdrop-blur-sm border border-slate-800">
@@ -223,7 +233,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <div className="font-semibold text-white text-sm">Location</div>
-                  <div className="text-slate-400 text-sm">San Francisco, CA</div>
+                  <div className="text-slate-400 text-sm">Nyeri, Kenya</div>
                 </div>
               </div>
             </div>

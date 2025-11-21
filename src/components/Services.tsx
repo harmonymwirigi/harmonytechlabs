@@ -1,7 +1,22 @@
-import { Brain, CreditCard, Code2, Rocket } from 'lucide-react';
+import { Brain, CreditCard, Code2, Rocket, Globe, Zap, TrendingUp } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 
 const services = [
+  {
+    icon: Globe,
+    title: 'Website Development',
+    description: 'Professional, responsive websites built with modern technologies, optimized for performance, SEO, and user experience.',
+  },
+  {
+    icon: Zap,
+    title: 'Automation Implementation',
+    description: 'Streamline your business processes with custom automation solutions that save time and reduce manual errors.',
+  },
+  {
+    icon: TrendingUp,
+    title: 'Trading Bot Development',
+    description: 'Custom trading bots with strategy implementation, backtesting, and real-time execution for various markets and exchanges.',
+  },
   {
     icon: Brain,
     title: 'AI Integration',
@@ -45,7 +60,7 @@ export default function Services() {
         </div>
 
         {/* Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {services.map((service, index) => (
             <Card
               key={index}

@@ -43,8 +43,8 @@ export default function Hero() {
 
           {/* Subheadline */}
           <p className="text-xl md:text-2xl text-slate-300 mb-12 max-w-3xl mx-auto leading-relaxed font-light">
-            We craft cutting-edge AI solutions, seamless payment integrations, and custom web applications 
-            that empower businesses to scale.
+            We build professional websites, implement automation solutions, create trading bots with custom strategies, 
+            and develop cutting-edge AI solutions that empower businesses to scale.
           </p>
 
           {/* CTAs */}
