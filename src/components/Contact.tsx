@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Send, Mail, Phone, MapPin } from 'lucide-react';
+import { Send, Mail, Phone, MapPin, ExternalLink, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -7,9 +7,20 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card } from '@/components/ui/card';
 import { useToast } from '@/components/ui/use-toast';
+import emailjs from '@emailjs/browser';
+
+// EmailJS Configuration
+// You'll need to set these in your .env file
+const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID || '';
+const EMAILJS_TEMPLATE_ID_CONTACT = import.meta.env.VITE_EMAILJS_TEMPLATE_ID_CONTACT || '';
+const EMAILJS_TEMPLATE_ID_CONSULTATION = import.meta.env.VITE_EMAILJS_TEMPLATE_ID_CONSULTATION || '';
+const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || '';
 
 export default function Contact() {
   const { toast } = useToast();
+  const [isSubmittingMain, setIsSubmittingMain] = useState(false);
+  const [isSubmittingSidebar, setIsSubmittingSidebar] = useState(false);
+  
   const [mainFormData, setMainFormData] = useState({
     name: '',
     email: '',
@@ -25,7 +36,7 @@ export default function Contact() {
     phone: '',
   });
 
-  const handleMainSubmit = (e: React.FormEvent) => {
+  const handleMainSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!mainFormData.name || !mainFormData.email || !mainFormData.message) {
@@ -37,22 +48,66 @@ export default function Contact() {
       return;
     }
 
-    toast({
-      title: "Message Sent!",
-      description: "We'll get back to you within 24 hours.",
-    });
+    if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID_CONTACT || !EMAILJS_PUBLIC_KEY) {
+      toast({
+        title: "Configuration Error",
+        description: "Email service is not configured. Please contact us directly at harmonymwithalii@gmail.com",
+        variant: "destructive",
+      });
+      return;
+    }
 
-    setMainFormData({
-      name: '',
-      email: '',
-      phone: '',
-      projectType: '',
-      budget: '',
-      message: '',
-    });
+    setIsSubmittingMain(true);
+
+    try {
+      const templateParams = {
+        from_name: mainFormData.name,
+        from_email: mainFormData.email,
+        phone: mainFormData.phone || 'Not provided',
+        project_type: mainFormData.projectType || 'Not specified',
+        budget: mainFormData.budget || 'Not specified',
+        message: mainFormData.message,
+      };
+
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID_CONTACT,
+        templateParams,
+        EMAILJS_PUBLIC_KEY
+      );
+
+      toast({
+        title: "Message Sent!",
+        description: "We'll get back to you within 24 hours.",
+      });
+
+      setMainFormData({
+        name: '',
+        email: '',
+        phone: '',
+        projectType: '',
+        budget: '',
+        message: '',
+      });
+    } catch (error: any) {
+      console.error('EmailJS Error:', error);
+      const errorMessage = error?.text || error?.message || 'Unknown error occurred';
+      console.error('Error details:', {
+        status: error?.status,
+        text: error?.text,
+        message: error?.message,
+      });
+      toast({
+        title: "Error Sending Message",
+        description: errorMessage || "Please try again or contact us directly at harmonymwithalii@gmail.com",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmittingMain(false);
+    }
   };
 
-  const handleSidebarSubmit = (e: React.FormEvent) => {
+  const handleSidebarSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!sidebarFormData.name || !sidebarFormData.email || !sidebarFormData.phone) {
@@ -64,16 +119,57 @@ export default function Contact() {
       return;
     }
 
-    toast({
-      title: "Consultation Requested!",
-      description: "We'll contact you shortly to schedule your free consultation.",
-    });
+    if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID_CONSULTATION || !EMAILJS_PUBLIC_KEY) {
+      toast({
+        title: "Configuration Error",
+        description: "Email service is not configured. Please contact us directly at harmonymwithalii@gmail.com",
+        variant: "destructive",
+      });
+      return;
+    }
 
-    setSidebarFormData({
-      name: '',
-      email: '',
-      phone: '',
-    });
+    setIsSubmittingSidebar(true);
+
+    try {
+      const templateParams = {
+        from_name: sidebarFormData.name,
+        from_email: sidebarFormData.email,
+        phone: sidebarFormData.phone,
+      };
+
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID_CONSULTATION,
+        templateParams,
+        EMAILJS_PUBLIC_KEY
+      );
+
+      toast({
+        title: "Consultation Requested!",
+        description: "We'll contact you shortly to schedule your free consultation.",
+      });
+
+      setSidebarFormData({
+        name: '',
+        email: '',
+        phone: '',
+      });
+    } catch (error: any) {
+      console.error('EmailJS Error:', error);
+      const errorMessage = error?.text || error?.message || 'Unknown error occurred';
+      console.error('Error details:', {
+        status: error?.status,
+        text: error?.text,
+        message: error?.message,
+      });
+      toast({
+        title: "Error Sending Request",
+        description: errorMessage || "Please try again or contact us directly at harmonymwithalii@gmail.com",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmittingSidebar(false);
+    }
   };
 
   return (
@@ -192,10 +288,20 @@ export default function Contact() {
                 <Button
                   type="submit"
                   size="lg"
-                  className="w-full bg-gold hover:bg-gold-dark text-slate-950 font-bold transition-all hover:-translate-y-1 shadow-lg shadow-gold/20 hover:shadow-gold/40"
+                  disabled={isSubmittingMain}
+                  className="w-full bg-gold hover:bg-gold-dark text-slate-950 font-bold transition-all hover:-translate-y-1 shadow-lg shadow-gold/20 hover:shadow-gold/40 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Send Message
-                  <Send className="ml-2 h-5 w-5" />
+                  {isSubmittingMain ? (
+                    <>
+                      <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      Send Message
+                      <Send className="ml-2 h-5 w-5" />
+                    </>
+                  )}
                 </Button>
               </form>
             </Card>
@@ -288,11 +394,59 @@ export default function Contact() {
                 <Button
                   type="submit"
                   size="lg"
-                  className="w-full bg-slate-950 hover:bg-slate-900 text-white font-bold transition-all hover:-translate-y-1 shadow-xl"
+                  disabled={isSubmittingSidebar}
+                  className="w-full bg-slate-950 hover:bg-slate-900 text-white font-bold transition-all hover:-translate-y-1 shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Request Consultation
+                  {isSubmittingSidebar ? (
+                    <>
+                      <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                      Sending...
+                    </>
+                  ) : (
+                    'Request Consultation'
+                  )}
                 </Button>
               </form>
+
+              {/* Divider */}
+              <div className="relative my-6">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-slate-800/50"></div>
+                </div>
+                <div className="relative flex justify-center text-sm">
+                  <span className="px-4 bg-gradient-to-br from-gold to-yellow-600 text-slate-950 font-semibold rounded-full py-1">
+                    OR
+                  </span>
+                </div>
+              </div>
+
+              {/* Fiverr CTA */}
+              <div className="text-center">
+                <p className="text-slate-800 font-semibold mb-3">Order on Fiverr</p>
+                <Button
+                  asChild
+                  size="lg"
+                  className="w-full bg-slate-950 hover:bg-slate-900 text-white font-bold transition-all hover:-translate-y-1 shadow-xl"
+                >
+                  <a
+                    href="https://www.fiverr.com/s/5r9ap66"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center space-x-2"
+                  >
+                    <span>Order Web App Development</span>
+                    <ExternalLink className="w-5 h-5" />
+                  </a>
+                </Button>
+                <a
+                  href="https://www.fiverr.com/harmonymwirigi?public_mode=true"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-slate-700 hover:text-slate-950 text-sm mt-2 inline-block underline"
+                >
+                  View my Fiverr profile
+                </a>
+              </div>
             </Card>
           </div>
         </div>

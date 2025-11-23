@@ -3,6 +3,7 @@ import Hero from './Hero';
 import Services from './Services';
 import SocialProof from './SocialProof';
 import Portfolio from './Portfolio';
+import Testimonials from './Testimonials';
 import About from './About';
 import Contact from './Contact';
 import Footer from './Footer';
@@ -16,6 +17,7 @@ export default function Home() {
       <Services />
       <SocialProof />
       <Portfolio />
+      <Testimonials />
       <About />
       <Contact />
       <Footer />
